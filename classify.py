@@ -10,7 +10,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from tensorboardX import SummaryWriter
 import shutil
 
 from src.utils import *
@@ -26,37 +25,19 @@ def get_args():
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="small",
                         help="small for 256 conv feature map, large for 1024 conv feature map")
-    parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="sgd")
-    parser.add_argument("-b", "--batch_size", type=int, default=128)
-    parser.add_argument("-n", "--num_epochs", type=int, default=20)
-    parser.add_argument("-l", "--lr", type=float, default=0.001)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
-    parser.add_argument("-d", "--dataset", type=str,
-                        choices=["agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
-                                 "amazon_polarity", "sogou_news", "yahoo_answers"], default="yelp_review_polarity",
-                        help="public dataset used for experiment. If this parameter is set, parameters input and output are ignored")
-    parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
-                        help="Early stopping's parameter: minimum change loss to qualify as an improvement")
-    parser.add_argument("-w", "--es_patience", type=int, default=3,
-                        help="Early stopping's parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.")
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
-    parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
-    parser.add_argument("-v", "--log_path", type=str, default="tensorboard/char-cnn")
     args = parser.parse_args()
     return args
 
 
 def train(opt):
-    model = torch.load(opt.input)
-
     if torch.cuda.is_available():
-        model.cuda()
-
-    test_params = {"batch_size": opt.batch_size,
-                   "shuffle": False,
-                   "num_workers": 0}
+      model = torch.load(opt.input)
+    else:
+      model = torch.load(opt.input, map_location='cpu')
     for fn in glob.glob('/space/SP/dumps/*.txt'):
       test_set = MyDataset(fn, opt.max_length)
-      test_generator = DataLoader(test_set, **test_params)
+      test_generator = DataLoader(test_set)
 
       model.eval()
       for batch in test_generator:
