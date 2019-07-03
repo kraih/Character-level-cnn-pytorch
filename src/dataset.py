@@ -3,10 +3,21 @@
 @author: Viet Nguyen <nhviet1009@gmail.com>
 """
 import numpy as np
+import glob
 import sys
 import csv
 from torch.utils.data import Dataset
 csv.field_size_limit(sys.maxsize)
+
+def load_dump(fn):
+    f = open(fn)
+    try:
+      return f.read()
+    except UnicodeDecodeError:
+      pass
+    f.close()
+    f = open(fn, encoding='iso-8859-15')
+    return f.read()
 
 
 class MyDataset(Dataset):
@@ -15,20 +26,18 @@ class MyDataset(Dataset):
         self.vocabulary = list("""abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
         self.identity_mat = np.identity(len(self.vocabulary))
         texts, labels = [], []
-        with open(data_path) as csv_file:
-            reader = csv.reader(csv_file, quotechar='"')
-            for idx, line in enumerate(reader):
-                text = ""
-                for tx in line[1:]:
-                    text += tx
-                    text += " "
-                # if len(line) == 3:
-                #     text = "{} {}".format(line[1].lower(), line[2].lower())
-                # else:
-                #     text = "{}".format(line[1].lower())
-                label = int(line[0]) - 1
-                texts.append(text)
-                labels.append(label)
+        
+        if not data_path:
+           for fn in glob.glob('/space/SP/good/*.txt'):
+              texts.append(load_dump(fn))
+              labels.append(1)
+           for fn in glob.glob('/space/SP/bad/*.txt'):
+              texts.append(load_dump(fn))
+              labels.append(0)
+        else:
+            texts.append(load_dump(data_path))
+            labels.append(1)
+
         self.texts = texts
         self.labels = labels
         self.max_length = max_length

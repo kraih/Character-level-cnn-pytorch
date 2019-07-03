@@ -64,18 +64,23 @@ def train(opt):
     test_params = {"batch_size": opt.batch_size,
                    "shuffle": False,
                    "num_workers": 0}
-    training_set = MyDataset(opt.input + os.sep + "train.csv", opt.max_length)
-    test_set = MyDataset(opt.input + os.sep + "test.csv", opt.max_length)
+    training_set = MyDataset(None, opt.max_length)
+    print(len(training_set))
+    test_size = int(.2 * len(training_set))
+    training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
+    print(len(training_set))
+    print(len(test_set))
+
     training_generator = DataLoader(training_set, **training_params)
     test_generator = DataLoader(test_set, **test_params)
 
     if opt.feature == "small":
-        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=training_set.num_classes,
+        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
                                   input_dim=len(opt.alphabet),
                                   n_conv_filters=256, n_fc_neurons=1024)
 
     elif opt.feature == "large":
-        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=training_set.num_classes,
+        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
                                   input_dim=len(opt.alphabet),
                                   n_conv_filters=1024, n_fc_neurons=2048)
     else:
