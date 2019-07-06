@@ -25,17 +25,15 @@ def get_args():
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="small",
                         help="small for 256 conv feature map, large for 1024 conv feature map")
-    parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="sgd")
+    parser.add_argument("-f1", type=int, default=128)
+    parser.add_argument("-f2", type=int, default=128)
+    parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="adam")
     parser.add_argument("-b", "--batch_size", type=int, default=128)
     parser.add_argument("-n", "--num_epochs", type=int, default=20)
-    parser.add_argument("-l", "--lr", type=float, default=0.001)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
-    parser.add_argument("-d", "--dataset", type=str,
-                        choices=["agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
-                                 "amazon_polarity", "sogou_news", "yahoo_answers"], default="yelp_review_polarity",
-                        help="public dataset used for experiment. If this parameter is set, parameters input and output are ignored")
+    parser.add_argument("-l", "--lr", type=float, default=0.0009)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
                         help="Early stopping's parameter: minimum change loss to qualify as an improvement")
-    parser.add_argument("-w", "--es_patience", type=int, default=3,
+    parser.add_argument("-w", "--es_patience", type=int, default=8,
                         help="Early stopping's parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.")
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
@@ -46,13 +44,9 @@ def get_args():
 
 def train(opt):
     if torch.cuda.is_available():
-        torch.cuda.manual_seed(123)
+        torch.cuda.manual_seed(122)
     else:
-        torch.manual_seed(123)
-    if opt.dataset in ["agnews", "dbpedia", "yelp_review", "yelp_review_polarity", "amazon_review",
-                       "amazon_polarity", "sogou_news", "yahoo_answers"]:
-        opt.input, opt.output = get_default_folder(opt.dataset, opt.feature)
-
+        torch.manual_seed(122)
     if not os.path.exists(opt.output):
         os.makedirs(opt.output)
     output_file = open(opt.output + os.sep + "logs.txt", "w")
@@ -74,19 +68,11 @@ def train(opt):
     training_generator = DataLoader(training_set, **training_params)
     test_generator = DataLoader(test_set, **test_params)
 
-    if opt.feature == "small":
-        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
-                                  input_dim=len(opt.alphabet),
-                                  n_conv_filters=256, n_fc_neurons=1024)
+    model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
+                              input_dim=len(opt.alphabet),
+                              n_conv_filters=opt.f1, n_fc_neurons=opt.f2)
 
-    elif opt.feature == "large":
-        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
-                                  input_dim=len(opt.alphabet),
-                                  n_conv_filters=1024, n_fc_neurons=2048)
-    else:
-        sys.exit("Invalid feature mode!")
-
-    log_path = "{}_{}_{}".format(opt.log_path, opt.feature, opt.dataset)
+    log_path = "{}_{}".format(opt.log_path, opt.feature)
     if os.path.isdir(log_path):
         shutil.rmtree(log_path)
     os.makedirs(log_path)
@@ -101,6 +87,7 @@ def train(opt):
     elif opt.optimizer == "sgd":
         optimizer = torch.optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
     best_loss = 1e5
+    best_accurancy = 0
     best_epoch = 0
     model.train()
     num_iter_per_epoch = len(training_generator)
@@ -163,13 +150,14 @@ def train(opt):
         writer.add_scalar('Test/Loss', te_loss, epoch)
         writer.add_scalar('Test/Accuracy', test_metrics["accuracy"], epoch)
         model.train()
-        if te_loss + opt.es_min_delta < best_loss:
+        if test_metrics["accuracy"] > best_accurancy:
             best_loss = te_loss
+            best_accurancy = test_metrics["accuracy"]
             best_epoch = epoch
-            torch.save(model, "{}/char-cnn_{}_{}".format(opt.output, opt.dataset, opt.feature))
+            torch.save(model, "{}/char-cnn_{}".format(opt.output, opt.feature))
         # Early stopping
         if epoch - best_epoch > opt.es_patience > 0:
-            print("Stop training at epoch {}. The lowest loss achieved is {} at epoch {}".format(epoch, te_loss, best_epoch))
+            print("Stop training at epoch {}. The highest accurancy is {} at epoch {}".format(epoch, best_accurancy, best_epoch))
             break
         if opt.optimizer == "sgd" and epoch % 3 == 0 and epoch > 0:
             current_lr = optimizer.state_dict()['param_groups'][0]['lr']
