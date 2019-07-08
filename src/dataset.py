@@ -9,31 +9,42 @@ import csv
 from torch.utils.data import Dataset
 csv.field_size_limit(sys.maxsize)
 
+
 def load_dump(fn):
     f = open(fn)
     try:
-      return f.read()
+        return f.read()
     except UnicodeDecodeError:
-      pass
+        pass
     f.close()
     f = open(fn, encoding='iso-8859-15')
     return f.read()
 
 
 class MyDataset(Dataset):
-    def __init__(self, data_path, max_length=1014):
+    def __init__(self, data_path, data=None, max_length=1014):
         self.data_path = data_path
-        self.vocabulary = list("""abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
+        self.vocabulary = list(
+            """abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
         self.identity_mat = np.identity(len(self.vocabulary))
         texts, labels = [], []
-        
+
         if not data_path:
-           for fn in glob.glob('/space/SP/good/*.txt'):
-              texts.append(load_dump(fn))
-              labels.append(1)
-           for fn in glob.glob('/space/SP/bad/*.txt'):
-              texts.append(load_dump(fn))
-              labels.append(0)
+            if data:
+                try:
+                    data = data.decode('utf-8')
+                except UnicodeDecodeError:
+                    data = data.decode('iso-8859-15')
+                
+                texts.append(data)
+                labels.append(0)
+            else:
+                for fn in glob.glob('/space/SP/good/*.txt'):
+                    texts.append(load_dump(fn))
+                    labels.append(1)
+                for fn in glob.glob('/space/SP/bad/*.txt'):
+                    texts.append(load_dump(fn))
+                    labels.append(0)
         else:
             texts.append(load_dump(data_path))
             labels.append(1)
