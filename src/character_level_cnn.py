@@ -21,14 +21,11 @@ class CharacterLevelCNN(nn.Module):
                                    nn.MaxPool1d(3))
 
         dimension = int((input_length - 96) / 27 * n_conv_filters)
-        self.fc1 = nn.Sequential(nn.Linear(dimension, n_fc_neurons), nn.Dropout(0.5))
-        self.fc2 = nn.Sequential(nn.Linear(n_fc_neurons, n_fc_neurons), nn.Dropout(0.5))
+        self.fc1 = nn.Sequential(nn.Linear(dimension, n_fc_neurons), nn.Dropout(0.8))
+        self.fc2 = nn.Sequential(nn.Linear(n_fc_neurons, n_fc_neurons), nn.Dropout(0.8))
         self.fc3 = nn.Linear(n_fc_neurons, n_classes)
 
-        if n_conv_filters == 256 and n_fc_neurons == 1024:
-            self._create_weights(mean=0.0, std=0.05)
-        elif n_conv_filters == 1024 and n_fc_neurons == 2048:
-            self._create_weights(mean=0.0, std=0.02)
+        self._create_weights(mean=0.0, std=0.05)
 
     def _create_weights(self, mean=0.0, std=0.05):
         for module in self.modules():

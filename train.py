@@ -29,11 +29,11 @@ def get_args():
     parser.add_argument("-f2", type=int, default=128)
     parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="adam")
     parser.add_argument("-b", "--batch_size", type=int, default=128)
-    parser.add_argument("-n", "--num_epochs", type=int, default=20)
+    parser.add_argument("-n", "--num_epochs", type=int, default=120)
     parser.add_argument("-l", "--lr", type=float, default=0.0009)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
                         help="Early stopping's parameter: minimum change loss to qualify as an improvement")
-    parser.add_argument("-w", "--es_patience", type=int, default=8,
+    parser.add_argument("-w", "--es_patience", type=int, default=20,
                         help="Early stopping's parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.")
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
@@ -44,9 +44,9 @@ def get_args():
 
 def train(opt):
     if torch.cuda.is_available():
-        torch.cuda.manual_seed(122)
+        torch.cuda.manual_seed(121)
     else:
-        torch.manual_seed(122)
+        torch.manual_seed(121)
     if not os.path.exists(opt.output):
         os.makedirs(opt.output)
     output_file = open(opt.output + os.sep + "logs.txt", "w")
@@ -60,10 +60,11 @@ def train(opt):
                    "num_workers": 0}
     training_set = MyDataset(None, opt.max_length)
     print(len(training_set))
-    test_size = int(.2 * len(training_set))
-    training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
-    print(len(training_set))
-    print(len(test_set))
+    test_size = int(.15 * len(training_set))
+    test_set = training_set
+    #training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
+    #print(len(training_set))
+    #print(len(test_set))
 
     training_generator = DataLoader(training_set, **training_params)
     test_generator = DataLoader(test_set, **test_params)
@@ -161,7 +162,7 @@ def train(opt):
             break
         if opt.optimizer == "sgd" and epoch % 3 == 0 and epoch > 0:
             current_lr = optimizer.state_dict()['param_groups'][0]['lr']
-            current_lr /= 2
+            current_lr *= 0.75
             for param_group in optimizer.param_groups:
                 param_group['lr'] = current_lr
 

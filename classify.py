@@ -50,7 +50,7 @@ def train(opt):
             out = F.softmax(te_predictions, 1)
             weight = torch.argmax(out[0])
             weighti = int(out[0][1].item() * 1000)
-            if weighti > 995 or weighti < 5: continue
+            #if weighti > 995 or weighti < 5: continue
             weighti = '%04d' % weighti
             print(True if weight == 1 else False, weighti, fn)
             fn = os.path.basename(fn)
