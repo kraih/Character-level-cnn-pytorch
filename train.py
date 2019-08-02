@@ -58,7 +58,7 @@ def train(opt):
     test_params = {"batch_size": opt.batch_size,
                    "shuffle": False,
                    "num_workers": 0}
-    training_set = MyDataset(None, opt.max_length)
+    training_set = MyDataset(None, None, opt.max_length)
     print(len(training_set))
     test_size = int(.15 * len(training_set))
     test_set = training_set
