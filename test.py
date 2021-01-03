@@ -25,6 +25,7 @@ def get_args():
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
+    parser.add_argument("--dumps", type=str, required=True, help="Where cavil dumps are stored")
     args = parser.parse_args()
     return args
 
@@ -35,7 +36,7 @@ def train(opt):
     if torch.cuda.is_available():
         model.cuda()
 
-    for fn in sorted(glob.glob('/space/SP/bad/*.txt') + glob.glob('/space/SP/good/*.txt')):
+    for fn in sorted(glob.glob(opt.dumps + '/bad/*.txt') + glob.glob(opt.dumps  + '/good/*.txt')):
       test_set = MyDataset(fn, opt.max_length)
       test_generator = DataLoader(test_set)
 
@@ -55,7 +56,8 @@ def train(opt):
                print(weighti, fn)
             if (weight == 1 and fn.find('/bad/') > 0) or (weight == 0 and fn.find('/good/') > 0):
                print(True if weight == 1 else False, weighti, fn)
-               os.rename(fn, '/space/SP/likely-good/' + weighti + '-' + os.path.basename(fn))
+               os.makedirs(opt.dumps + '/likely-good', exi
+               os.rename(fn, opt.dumps + '/likely-good/' + weighti + '-' + os.path.basename(fn))
 
 if __name__ == "__main__":
     opt = get_args()

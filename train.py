@@ -9,7 +9,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from tensorboardX import SummaryWriter
 import shutil
 
 from src.utils import *
@@ -38,6 +37,7 @@ def get_args():
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
     parser.add_argument("-v", "--log_path", type=str, default="tensorboard/char-cnn")
+    parser.add_argument("--dumps", type=str, required=True, help="Where cavil dumps are stored")
     args = parser.parse_args()
     return args
 
@@ -58,8 +58,8 @@ def train(opt):
     test_params = {"batch_size": opt.batch_size,
                    "shuffle": False,
                    "num_workers": 0}
-    training_set = MyDataset(None, None, opt.max_length)
-    print(len(training_set))
+    training_set = MyDataset(None, None, opt.max_length, opt.dumps)
+    print("Found", len(training_set), "for training")
     test_size = int(.15 * len(training_set))
     test_set = training_set
     #training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
@@ -77,7 +77,7 @@ def train(opt):
     if os.path.isdir(log_path):
         shutil.rmtree(log_path)
     os.makedirs(log_path)
-    writer = SummaryWriter(log_path)
+    #writer = SummaryWriter(log_path)
 
     if torch.cuda.is_available():
         model.cuda()
@@ -114,8 +114,8 @@ def train(opt):
                 num_iter_per_epoch,
                 optimizer.param_groups[0]['lr'],
                 loss, training_metrics["accuracy"]))
-            writer.add_scalar('Train/Loss', loss, epoch * num_iter_per_epoch + iter)
-            writer.add_scalar('Train/Accuracy', training_metrics["accuracy"], epoch * num_iter_per_epoch + iter)
+            #writer.add_scalar('Train/Loss', loss, epoch * num_iter_per_epoch + iter)
+            #writer.add_scalar('Train/Accuracy', training_metrics["accuracy"], epoch * num_iter_per_epoch + iter)
         model.eval()
         loss_ls = []
         te_label_ls = []
@@ -148,8 +148,8 @@ def train(opt):
             opt.num_epochs,
             optimizer.param_groups[0]['lr'],
             te_loss, test_metrics["accuracy"]))
-        writer.add_scalar('Test/Loss', te_loss, epoch)
-        writer.add_scalar('Test/Accuracy', test_metrics["accuracy"], epoch)
+        #writer.add_scalar('Test/Loss', te_loss, epoch)
+        #writer.add_scalar('Test/Accuracy', test_metrics["accuracy"], epoch)
         model.train()
         if test_metrics["accuracy"] > best_accurancy:
             best_loss = te_loss

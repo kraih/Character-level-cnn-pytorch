@@ -22,7 +22,7 @@ def load_dump(fn):
 
 
 class MyDataset(Dataset):
-    def __init__(self, data_path, data=None, max_length=1014):
+    def __init__(self, data_path, data=None, max_length=1014, dumps_folder="/space/SP"):
         self.data_path = data_path
         self.vocabulary = list(
             """abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
@@ -39,10 +39,10 @@ class MyDataset(Dataset):
                 texts.append(data)
                 labels.append(0)
             else:
-                for fn in glob.glob('/space/SP/good/*.txt'):
+                for fn in glob.glob(dumps_folder + '/good/*.txt'):
                     texts.append(load_dump(fn))
                     labels.append(1)
-                for fn in glob.glob('/space/SP/bad/*.txt'):
+                for fn in glob.glob(dumps_folder + '/bad/*.txt'):
                     texts.append(load_dump(fn))
                     labels.append(0)
         else:
