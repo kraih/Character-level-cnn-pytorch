@@ -51,6 +51,8 @@ def train(opt):
             weight = torch.argmax(out[0])
             weighti = int(out[0][1].item() * 1000)
             weighti = '%04d' % weighti
+            if weighti != '0000' and weighti != '1000' and weighti != '0999' and weighti != '0001': 
+               print(weighti, fn)
             if (weight == 1 and fn.find('/bad/') > 0) or (weight == 0 and fn.find('/good/') > 0):
                print(True if weight == 1 else False, weighti, fn)
                os.rename(fn, '/space/SP/likely-good/' + weighti + '-' + os.path.basename(fn))
