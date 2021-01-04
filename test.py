@@ -24,7 +24,6 @@ def get_args():
                         default="""abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
-    parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
     parser.add_argument("--dumps", type=str, required=True, help="Where cavil dumps are stored")
     args = parser.parse_args()
     return args
@@ -56,7 +55,7 @@ def train(opt):
                print(weighti, fn)
             if (weight == 1 and fn.find('/bad/') > 0) or (weight == 0 and fn.find('/good/') > 0):
                print(True if weight == 1 else False, weighti, fn)
-               os.makedirs(opt.dumps + '/likely-good', exi
+               os.makedirs(opt.dumps + '/likely-good', exi)
                os.rename(fn, opt.dumps + '/likely-good/' + weighti + '-' + os.path.basename(fn))
 
 if __name__ == "__main__":
