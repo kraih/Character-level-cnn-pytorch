@@ -1,246 +1,342 @@
-Model's parameters: {'alphabet': 'abcdefghijklmnopqrstuvwxyz0123456789,;.!?:\'"/\\|_@#$%^&*~`+-=<>()[]{}', 'max_length': 1014, 'feature': 'small', 'f1': 256, 'f2': 128, 'optimizer': 'sgd', 'batch_size': 128, 'num_epochs': 120, 'lr': 0.01, 'es_min_delta': 0.0, 'es_patience': 15, 'input': 'input', 'output': 'output/default/', 'log_path': 'tensorboard/char-cnn'}Epoch: 1/120 
-Test loss: 0.2779529094696045 Test accuracy: 0.8982274413277952 
+Model's parameters: {'alphabet': 'abcdefghijklmnopqrstuvwxyz0123456789,;.!?:\'"/\\|_@#$%^&*~`+-=<>()[]{}', 'max_length': 1014, 'feature': 'small', 'f1': 256, 'f2': 128, 'optimizer': 'sgd', 'batch_size': 128, 'num_epochs': 120, 'lr': 0.01, 'es_min_delta': 0.0, 'es_patience': 15, 'input': 'input', 'output': 'output/default/', 'log_path': 'tensorboard/char-cnn', 'dumps': '/dumps'}Epoch: 1/120 
+Test loss: 0.3408724069595337 Test accuracy: 0.8793669952390532 
 Test confusion matrix: 
-[[28731  1737]
- [ 4217 23818]]
+[[27395  3828]
+ [ 3368 25061]]
 
 Epoch: 2/120 
-Test loss: 0.19728882610797882 Test accuracy: 0.9279011332752166 
+Test loss: 0.2310449481010437 Test accuracy: 0.9056024944679139 
 Test confusion matrix: 
-[[29525   943]
- [ 3275 24760]]
+[[30664   559]
+ [ 5072 23357]]
 
 Epoch: 3/120 
-Test loss: 0.14279507100582123 Test accuracy: 0.9476095242978992 
+Test loss: 0.28075531125068665 Test accuracy: 0.9034902434117884 
 Test confusion matrix: 
-[[28850  1618]
- [ 1447 26588]]
+[[26338  4885]
+ [  872 27557]]
 
 Epoch: 4/120 
-Test loss: 0.13655835390090942 Test accuracy: 0.9461907936345144 
+Test loss: 0.12109542638063431 Test accuracy: 0.955944477972239 
 Test confusion matrix: 
-[[30239   229]
- [ 2919 25116]]
+[[30005  1218]
+ [ 1410 27019]]
 
 Epoch: 5/120 
-Test loss: 0.06370822340250015 Test accuracy: 0.9750952942584141 
+Test loss: 0.1077481359243393 Test accuracy: 0.9564306309930932 
 Test confusion matrix: 
-[[30118   350]
- [ 1107 26928]]
+[[30799   424]
+ [ 2175 26254]]
 
 Epoch: 6/120 
-Test loss: 0.04274016618728638 Test accuracy: 0.9860690904739928 
+Test loss: 0.056491050869226456 Test accuracy: 0.9815932407966204 
 Test confusion matrix: 
-[[30084   384]
- [  431 27604]]
+[[30736   487]
+ [  611 27818]]
 
 Epoch: 7/120 
-Test loss: 0.06468299776315689 Test accuracy: 0.9791121822812505 
+Test loss: 0.11152663826942444 Test accuracy: 0.9515691007845504 
 Test confusion matrix: 
-[[29346  1122]
- [  100 27935]]
+[[31176    47]
+ [ 2842 25587]]
 
 Epoch: 8/120 
-Test loss: 0.031488582491874695 Test accuracy: 0.9869066543596055 
+Test loss: 0.15370868146419525 Test accuracy: 0.9416616374974854 
 Test confusion matrix: 
-[[30438    30]
- [  736 27299]]
+[[31203    20]
+ [ 3460 24969]]
 
 Epoch: 9/120 
-Test loss: 0.0119917131960392 Test accuracy: 0.9967523033006854 
+Test loss: 0.018627086654305458 Test accuracy: 0.9957922617850198 
 Test confusion matrix: 
-[[30365   103]
- [   87 27948]]
+[[31029   194]
+ [   57 28372]]
 
 Epoch: 10/120 
-Test loss: 0.02447149157524109 Test accuracy: 0.9900005127942156 
+Test loss: 0.04224878549575806 Test accuracy: 0.9855327566552672 
 Test confusion matrix: 
-[[30456    12]
- [  573 27462]]
+[[30378   845]
+ [   18 28411]]
 
 Epoch: 11/120 
-Test loss: 0.019743455573916435 Test accuracy: 0.9920004102353726 
+Test loss: 0.006973892915993929 Test accuracy: 0.9985080131428955 
 Test confusion matrix: 
-[[30466     2]
- [  466 27569]]
+[[31176    47]
+ [   42 28387]]
 
 Epoch: 12/120 
-Test loss: 0.004947588313370943 Test accuracy: 0.99835905850982 
+Test loss: 0.006062905304133892 Test accuracy: 0.9984074297592704 
 Test confusion matrix: 
-[[30462     6]
- [   90 27945]]
+[[31205    18]
+ [   77 28352]]
 
 Epoch: 13/120 
-Test loss: 0.004122283775359392 Test accuracy: 0.998769293882365 
+Test loss: 0.005327917635440826 Test accuracy: 0.9987762354992289 
 Test confusion matrix: 
-[[30466     2]
- [   70 27965]]
+[[31172    51]
+ [   22 28407]]
 
 Epoch: 14/120 
-Test loss: 0.0009544097702018917 Test accuracy: 0.9998119754542502 
+Test loss: 0.0029526948928833008 Test accuracy: 0.9992959163146248 
 Test confusion matrix: 
-[[30464     4]
- [    7 28028]]
+[[31197    26]
+ [   16 28413]]
 
 Epoch: 15/120 
-Test loss: 0.0007747341878712177 Test accuracy: 0.9997436028921594 
+Test loss: 0.0026509433519095182 Test accuracy: 0.9994132635955207 
 Test confusion matrix: 
-[[30462     6]
- [    9 28026]]
+[[31208    15]
+ [   20 28409]]
 
 Epoch: 16/120 
-Test loss: 0.0007041751523502171 Test accuracy: 0.9998290685947729 
+Test loss: 0.008949236012995243 Test accuracy: 0.9972674847448535 
 Test confusion matrix: 
-[[30464     4]
- [    6 28029]]
+[[31220     3]
+ [  160 28269]]
 
 Epoch: 17/120 
-Test loss: 0.0002514756051823497 Test accuracy: 0.9999487205784319 
+Test loss: 0.0021433448418974876 Test accuracy: 0.9992959163146248 
 Test confusion matrix: 
-[[30466     2]
- [    1 28034]]
+[[31213    10]
+ [   32 28397]]
 
 Epoch: 18/120 
-Test loss: 0.0007025338709354401 Test accuracy: 0.9998632548758183 
+Test loss: 0.004191740415990353 Test accuracy: 0.9990276939582914 
 Test confusion matrix: 
-[[30466     2]
- [    6 28029]]
+[[31171    52]
+ [    6 28423]]
 
 Epoch: 19/120 
-Test loss: 0.0013235704973340034 Test accuracy: 0.9996239509085004 
+Test loss: 0.002238592365756631 Test accuracy: 0.9995809025682291 
 Test confusion matrix: 
-[[30467     1]
- [   21 28014]]
+[[31204    19]
+ [    6 28423]]
 
 Epoch: 20/120 
-Test loss: 0.0001647053868509829 Test accuracy: 0.9999658137189545 
+Test loss: 0.00113114423584193 Test accuracy: 0.9997150137463957 
 Test confusion matrix: 
-[[30467     1]
- [    1 28034]]
+[[31214     9]
+ [    8 28421]]
 
 Epoch: 21/120 
-Test loss: 0.00016862060874700546 Test accuracy: 0.9999316274379092 
+Test loss: 0.0013206044677644968 Test accuracy: 0.9996311942600415 
 Test confusion matrix: 
-[[30468     0]
- [    4 28031]]
+[[31216     7]
+ [   15 28414]]
 
 Epoch: 22/120 
-Test loss: 0.0005186599446460605 Test accuracy: 0.9998803480163411 
+Test loss: 0.0010476346360519528 Test accuracy: 0.9997485415409374 
 Test confusion matrix: 
-[[30464     4]
- [    3 28032]]
+[[31221     2]
+ [   13 28416]]
 
 Epoch: 23/120 
-Test loss: 0.0001400158362230286 Test accuracy: 0.9999658137189545 
+Test loss: 0.0007559310179203749 Test accuracy: 0.9997317776436666 
 Test confusion matrix: 
-[[30467     1]
- [    1 28034]]
+[[31217     6]
+ [   10 28419]]
 
 Epoch: 24/120 
-Test loss: 0.0001483753731008619 Test accuracy: 0.9999658137189545 
+Test loss: 0.0008419239893555641 Test accuracy: 0.9997653054382083 
 Test confusion matrix: 
-[[30466     2]
- [    0 28035]]
+[[31215     8]
+ [    6 28423]]
 
 Epoch: 25/120 
-Test loss: 0.00010016355372499675 Test accuracy: 0.9999829068594773 
+Test loss: 0.0007535142940469086 Test accuracy: 0.9997317776436666 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31213    10]
+ [    6 28423]]
 
 Epoch: 26/120 
-Test loss: 0.00010596604988677427 Test accuracy: 0.9999658137189545 
+Test loss: 0.000637520628515631 Test accuracy: 0.9997820693354791 
 Test confusion matrix: 
-[[30466     2]
- [    0 28035]]
+[[31217     6]
+ [    7 28422]]
 
 Epoch: 27/120 
-Test loss: 0.00010950530850095674 Test accuracy: 0.9999658137189545 
+Test loss: 0.0007496008765883744 Test accuracy: 0.9997653054382083 
 Test confusion matrix: 
-[[30466     2]
- [    0 28035]]
+[[31217     6]
+ [    8 28421]]
 
 Epoch: 28/120 
-Test loss: 0.00018454069504514337 Test accuracy: 0.9999487205784319 
+Test loss: 0.0007546941051259637 Test accuracy: 0.9997820693354791 
 Test confusion matrix: 
-[[30466     2]
- [    1 28034]]
+[[31216     7]
+ [    6 28423]]
 
 Epoch: 29/120 
-Test loss: 0.00010558385838521644 Test accuracy: 0.9999658137189545 
+Test loss: 0.0006247965502552688 Test accuracy: 0.99979883323275 
 Test confusion matrix: 
-[[30467     1]
- [    1 28034]]
+[[31221     2]
+ [   10 28419]]
 
 Epoch: 30/120 
-Test loss: 8.73267708811909e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.0005620833253487945 Test accuracy: 0.99979883323275 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31219     4]
+ [    8 28421]]
 
 Epoch: 31/120 
-Test loss: 7.911660213721916e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.0006031273514963686 Test accuracy: 0.9997485415409374 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31214     9]
+ [    6 28423]]
 
 Epoch: 32/120 
-Test loss: 7.744981849100441e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.000534461869392544 Test accuracy: 0.99979883323275 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31214     9]
+ [    3 28426]]
 
 Epoch: 33/120 
-Test loss: 8.033937774598598e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.0005294465227052569 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31221     2]
+ [    8 28421]]
 
 Epoch: 34/120 
-Test loss: 8.130094647640362e-05 Test accuracy: 0.9999658137189545 
+Test loss: 0.0005369320278987288 Test accuracy: 0.99979883323275 
 Test confusion matrix: 
-[[30468     0]
- [    2 28033]]
+[[31218     5]
+ [    7 28422]]
 
 Epoch: 35/120 
-Test loss: 7.65187360229902e-05 Test accuracy: 0.9999658137189545 
+Test loss: 0.0004910235293209553 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30468     0]
- [    2 28033]]
+[[31220     3]
+ [    7 28422]]
 
 Epoch: 36/120 
-Test loss: 7.703361188760027e-05 Test accuracy: 0.9999658137189545 
+Test loss: 0.000462903524748981 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30468     0]
- [    2 28033]]
+[[31221     2]
+ [    8 28421]]
 
 Epoch: 37/120 
-Test loss: 8.268911915365607e-05 Test accuracy: 0.9999658137189545 
+Test loss: 0.0004965296830050647 Test accuracy: 0.99979883323275 
 Test confusion matrix: 
-[[30468     0]
- [    2 28033]]
+[[31219     4]
+ [    8 28421]]
 
 Epoch: 38/120 
-Test loss: 7.169824675656855e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.00047537710634060204 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31218     5]
+ [    5 28424]]
 
 Epoch: 39/120 
-Test loss: 7.080262730596587e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.00046234813635237515 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31219     4]
+ [    6 28423]]
 
 Epoch: 40/120 
-Test loss: 7.70835395087488e-05 Test accuracy: 0.9999658137189545 
+Test loss: 0.00044527710997499526 Test accuracy: 0.9998323610272917 
 Test confusion matrix: 
-[[30468     0]
- [    2 28033]]
+[[31222     1]
+ [    9 28420]]
 
 Epoch: 41/120 
-Test loss: 7.024018123047426e-05 Test accuracy: 0.9999829068594773 
+Test loss: 0.0004461078788153827 Test accuracy: 0.9998491249245625 
 Test confusion matrix: 
-[[30467     1]
- [    0 28035]]
+[[31221     2]
+ [    7 28422]]
+
+Epoch: 42/120 
+Test loss: 0.00045422185212373734 Test accuracy: 0.9998323610272917 
+Test confusion matrix: 
+[[31217     6]
+ [    4 28425]]
+
+Epoch: 43/120 
+Test loss: 0.0004692701331805438 Test accuracy: 0.9998323610272917 
+Test confusion matrix: 
+[[31223     0]
+ [   10 28419]]
+
+Epoch: 44/120 
+Test loss: 0.0004653201613109559 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31218     5]
+ [    4 28425]]
+
+Epoch: 45/120 
+Test loss: 0.0004319139407016337 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31218     5]
+ [    4 28425]]
+
+Epoch: 46/120 
+Test loss: 0.00044737537973560393 Test accuracy: 0.9998323610272917 
+Test confusion matrix: 
+[[31219     4]
+ [    6 28423]]
+
+Epoch: 47/120 
+Test loss: 0.0004360575112514198 Test accuracy: 0.9998323610272917 
+Test confusion matrix: 
+[[31221     2]
+ [    8 28421]]
+
+Epoch: 48/120 
+Test loss: 0.0004389179521240294 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 49/120 
+Test loss: 0.00043990687117911875 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 50/120 
+Test loss: 0.00043428881326690316 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 51/120 
+Test loss: 0.0004338007711339742 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 52/120 
+Test loss: 0.00043225177796557546 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 53/120 
+Test loss: 0.00042979131103493273 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 54/120 
+Test loss: 0.0004325051268097013 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 55/120 
+Test loss: 0.0004308844800107181 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31221     2]
+ [    7 28422]]
+
+Epoch: 56/120 
+Test loss: 0.0004269737983122468 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31222     1]
+ [    8 28421]]
+
+Epoch: 57/120 
+Test loss: 0.0004244971205480397 Test accuracy: 0.9998491249245625 
+Test confusion matrix: 
+[[31223     0]
+ [    9 28420]]
 
