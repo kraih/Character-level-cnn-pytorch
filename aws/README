@@ -1,0 +1,26 @@
+# random notes
+
+# on legaldb: cavil extract
+# sync /srv/dumps to WC
+
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ID.dkr.ecr.eu-central-1.amazonaws.com
+
+docker build -t ID.dkr.ecr.eu-central-1.amazonaws.com/cavil-train
+docker push ID.dkr.ecr.eu-central-1.amazonaws.com/cavil-train
+
+# this starts a p2.xlarge EC2 instance (so hurry afterwards :)
+aws cloudformation deploy --stack-name cnn-check --template-file gpu-cluster.yml --capabilities CAPABILITY_IAM
+
+export cluster=$(aws cloudformation describe-stacks --stack-name cnn-check --query 'Stacks[0].Outputs[?OutputKey==`ClusterName`].OutputValue' --output text)
+
+aws ecs register-task-definition --cli-input-json file://train-task.json
+aws ecs run-task --cluster $cluster --task-definition cavil-1-gpu
+# wait for it to finish
+awslogs get test-task-tensorflow-gpu  --watch
+
+# scale down the EC2 instance
+aws autoscaling set-desired-capacity --auto-scaling-group $(aws autoscaling describe-auto-scaling-groups --query 'AutoScalingGroups[0].Tags[?Key==`aws:cloudformation:stack-name`]'.ResourceId --output text) --desired-capacity 0
+
+# to start again, use --desired-capacity 1 before run-task
+
+aws cloudformation delete-stack --stack-name cnn-check

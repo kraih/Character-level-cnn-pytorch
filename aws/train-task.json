@@ -1,0 +1,31 @@
+{
+    "containerDefinitions": [
+        {
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "cnn-check",
+                    "awslogs-region": "eu-central-1",
+                    "awslogs-stream-prefix": "cavil-train"
+                }
+            },
+            "cpu": 1024,
+            "resourceRequirements": [
+                {
+                    "type": "GPU",
+                    "value": "1"
+                }
+            ],
+            "image": "AWS_ID.dkr.ecr.eu-central-1.amazonaws.com/cavil-train",
+            "essential": true,
+            "name": "tensorflow-gpu",
+	    "command": [
+		    "sh", "-c", "cd /cnn && git pull && python3 train.py --dumps /dumps -f1 256 -f2 128 -w 15 -p sgd --lr 0.01 -o output/default/ && python3 test.py -i output/default/char-cnn_small --dumps /dumps | tee output/default/test.log && tar cvJf /tmp/output.tar.xz output/default && curl -F file=@/tmp/output.tar.xz https://file.io"
+             ]
+        }
+    ],
+    "memory": "6144",
+    "family": "cavil-1-gpu",
+    "cpu": "1024",
+    "placementConstraints": []
+}
