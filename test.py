@@ -55,8 +55,6 @@ def train(opt):
                print(weighti, fn)
             if (weight == 1 and fn.find('/bad/') > 0) or (weight == 0 and fn.find('/good/') > 0):
                print(True if weight == 1 else False, weighti, fn)
-               os.makedirs(opt.dumps + '/likely-good', exi)
-               os.rename(fn, opt.dumps + '/likely-good/' + weighti + '-' + os.path.basename(fn))
 
 if __name__ == "__main__":
     opt = get_args()
