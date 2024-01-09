@@ -48,7 +48,7 @@ class ClassifyRequestHandler(http.server.BaseHTTPRequestHandler):
         # it should be possible to fetch te_feature from test_set without going
         # through dataloader, but I was unable to find the magic call
         test_generator = DataLoader(test_set)
-        te_feature, te_label = iter(test_generator).next()
+        te_feature, te_label = next(iter(test_generator))
 
         model.eval()
         if torch.cuda.is_available():
