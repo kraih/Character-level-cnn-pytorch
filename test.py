@@ -30,7 +30,10 @@ def get_args():
 
 
 def train(opt):
-    model = torch.load(opt.input)
+    if torch.cuda.is_available():
+      model = torch.load(opt.input)
+    else:
+      model = torch.load(opt.input, map_location='cpu')
 
     if torch.cuda.is_available():
         model.cuda()
