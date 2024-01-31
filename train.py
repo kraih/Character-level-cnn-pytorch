@@ -22,17 +22,17 @@ def get_args():
     parser.add_argument("-a", "--alphabet", type=str,
                         default="""abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
     parser.add_argument("-m", "--max_length", type=int, default=1014)
-    parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="small",
+    parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="large",
                         help="small for 256 conv feature map, large for 1024 conv feature map")
-    parser.add_argument("-f1", type=int, default=256)
-    parser.add_argument("-f2", type=int, default=128)
-    parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="adam")
-    parser.add_argument("-b", "--batch_size", type=int, default=1024)
-    parser.add_argument("-n", "--num_epochs", type=int, default=120)
+    parser.add_argument("-f1", type=int, default=1024)
+    parser.add_argument("-f2", type=int, default=2048)
+    parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="sgd")
+    parser.add_argument("-b", "--batch_size", type=int, default=512)
+    parser.add_argument("-n", "--num_epochs", type=int, default=100)
     parser.add_argument("-l", "--lr", type=float, default=0.01)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
                         help="Early stopping's parameter: minimum change loss to qualify as an improvement")
-    parser.add_argument("-w", "--es_patience", type=int, default=20,
+    parser.add_argument("-w", "--es_patience", type=int, default=8,
                         help="Early stopping's parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.")
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
@@ -159,7 +159,7 @@ def train(opt):
             break
         if opt.optimizer == "sgd" and epoch % 3 == 0 and epoch > 0:
             current_lr = optimizer.state_dict()['param_groups'][0]['lr']
-            current_lr *= 0.75
+            current_lr /= 2
             for param_group in optimizer.param_groups:
                 param_group['lr'] = current_lr
 
