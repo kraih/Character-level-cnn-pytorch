@@ -24,12 +24,12 @@ def get_args():
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="small",
                         help="small for 256 conv feature map, large for 1024 conv feature map")
-    parser.add_argument("-f1", type=int, default=128)
+    parser.add_argument("-f1", type=int, default=256)
     parser.add_argument("-f2", type=int, default=128)
     parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="adam")
-    parser.add_argument("-b", "--batch_size", type=int, default=128)
+    parser.add_argument("-b", "--batch_size", type=int, default=1024)
     parser.add_argument("-n", "--num_epochs", type=int, default=120)
-    parser.add_argument("-l", "--lr", type=float, default=0.0009)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
+    parser.add_argument("-l", "--lr", type=float, default=0.01)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
                         help="Early stopping's parameter: minimum change loss to qualify as an improvement")
     parser.add_argument("-w", "--es_patience", type=int, default=20,
@@ -59,12 +59,11 @@ def train(opt):
                    "shuffle": False,
                    "num_workers": 0}
     training_set = MyDataset(None, None, opt.max_length, opt.dumps)
-    print("Found", len(training_set), "for training")
-    test_size = int(.15 * len(training_set))
-    test_set = training_set
-    #training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
-    #print(len(training_set))
-    #print(len(test_set))
+    print(len(training_set))
+    test_size = int(.1 * len(training_set))
+    training_set, test_set = torch.utils.data.random_split(training_set, [len(training_set) - test_size, test_size])
+    print(len(training_set))
+    print(len(test_set))
 
     training_generator = DataLoader(training_set, **training_params)
     test_generator = DataLoader(test_set, **test_params)
@@ -88,7 +87,6 @@ def train(opt):
     elif opt.optimizer == "sgd":
         optimizer = torch.optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
     best_loss = 1e5
-    best_accurancy = 0
     best_epoch = 0
     model.train()
     num_iter_per_epoch = len(training_generator)
@@ -126,7 +124,7 @@ def train(opt):
             if torch.cuda.is_available():
                 te_feature = te_feature.cuda()
                 te_label = te_label.cuda()
-            with torch.no_grad():
+            with torch.inference_mode():
                 te_predictions = model(te_feature)
             te_loss = criterion(te_predictions, te_label)
             loss_ls.append(te_loss * num_sample)
@@ -151,14 +149,13 @@ def train(opt):
         #writer.add_scalar('Test/Loss', te_loss, epoch)
         #writer.add_scalar('Test/Accuracy', test_metrics["accuracy"], epoch)
         model.train()
-        if test_metrics["accuracy"] > best_accurancy:
+        if te_loss + opt.es_min_delta < best_loss:
             best_loss = te_loss
-            best_accurancy = test_metrics["accuracy"]
             best_epoch = epoch
             torch.save(model, "{}/char-cnn_{}".format(opt.output, opt.feature))
         # Early stopping
         if epoch - best_epoch > opt.es_patience > 0:
-            print("Stop training at epoch {}. The highest accurancy is {} at epoch {}".format(epoch, best_accurancy, best_epoch))
+            print("Stop training at epoch {}. The lowest loss achieved is {} at epoch {}".format(epoch, te_loss, best_epoch))
             break
         if opt.optimizer == "sgd" and epoch % 3 == 0 and epoch > 0:
             current_lr = optimizer.state_dict()['param_groups'][0]['lr']
