@@ -162,6 +162,7 @@ def train(opt):
             best_loss = te_loss
             best_epoch = epoch
             torch.save(model, "{}/char-cnn_{}".format(opt.output, opt.feature))
+            print("The model has been saved in epoch {}".format(epoch)
         # Early stopping
         if epoch - best_epoch > opt.es_patience > 0:
             print("Stop training at epoch {}. The lowest loss achieved is {} at epoch {}".format(epoch, best_loss, best_epoch))
