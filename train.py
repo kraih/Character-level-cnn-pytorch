@@ -30,7 +30,7 @@ def get_args():
     parser.add_argument("-l", "--lr", type=float, default=0.01)  # recommended learning rate for sgd is 0.01, while for adam is 0.001
     parser.add_argument("-y", "--es_min_delta", type=float, default=0.0,
                         help="Early stopping's parameter: minimum change loss to qualify as an improvement")
-    parser.add_argument("-w", "--es_patience", type=int, default=8,
+    parser.add_argument("-w", "--es_patience", type=int, default=5,
                         help="Early stopping's parameter: number of epochs with no improvement after which training will be stopped. Set to 0 to disable this technique.")
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("-o", "--output", type=str, default="output", help="path to output folder")
