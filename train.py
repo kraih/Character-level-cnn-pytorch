@@ -22,10 +22,8 @@ def get_args():
     parser.add_argument("-a", "--alphabet", type=str,
                         default="""abcdefghijklmnopqrstuvwxyz0123456789,;.!?:'\"/\\|_@#$%^&*~`+-=<>()[]{}""")
     parser.add_argument("-m", "--max_length", type=int, default=1014)
-    parser.add_argument("-f", "--feature", type=str, choices=["large", "small"], default="large",
+    parser.add_argument("-f", "--feature", type=str, choices=["large", "small", "tiny"], default="large",
                         help="small for 256 conv feature map, large for 1024 conv feature map")
-    parser.add_argument("-f1", type=int, default=1024)
-    parser.add_argument("-f2", type=int, default=2048)
     parser.add_argument("-p", "--optimizer", type=str, choices=["sgd", "adam"], default="sgd")
     parser.add_argument("-b", "--batch_size", type=int, default=512)
     parser.add_argument("-n", "--num_epochs", type=int, default=100)
@@ -68,9 +66,20 @@ def train(opt):
     training_generator = DataLoader(training_set, **training_params)
     test_generator = DataLoader(test_set, **test_params)
 
-    model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
-                              input_dim=len(opt.alphabet),
-                              n_conv_filters=opt.f1, n_fc_neurons=opt.f2)
+    if opt.feature == "small":
+        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
+                                  input_dim=len(opt.alphabet),
+                                  n_conv_filters=256, n_fc_neurons=1024)
+    elif opt.feature == "tiny":
+        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
+                                  input_dim=len(opt.alphabet),
+                                  n_conv_filters=256, n_fc_neurons=128)
+    elif opt.feature == "large":
+        model = CharacterLevelCNN(input_length=opt.max_length, n_classes=2,
+                                  input_dim=len(opt.alphabet),
+                                  n_conv_filters=1024, n_fc_neurons=2048)
+    else:
+        sys.exit("Invalid feature mode!")
 
     log_path = "{}_{}".format(opt.log_path, opt.feature)
     if os.path.isdir(log_path):
