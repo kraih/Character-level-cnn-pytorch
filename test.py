@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from pathlib import Path
 import shutil
 
 from src.utils import *
@@ -25,6 +26,7 @@ def get_args():
     parser.add_argument("-m", "--max_length", type=int, default=1014)
     parser.add_argument("-i", "--input", type=str, default="input", help="path to input folder")
     parser.add_argument("--dumps", type=str, required=True, help="Where cavil dumps are stored")
+    parser.add_argument("-v", "--verbose", action='store_true', help="Preview mismatched files")
     args = parser.parse_args()
     return args
 
@@ -43,6 +45,7 @@ def train(opt):
       test_generator = DataLoader(test_set)
 
       model.eval()
+      verbose = opt.verbose;
       for batch in test_generator:
         te_feature, te_label = batch
         if torch.cuda.is_available():
@@ -58,6 +61,13 @@ def train(opt):
                print(weighti, fn)
             if (weight == 1 and fn.find('/bad/') > 0) or (weight == 0 and fn.find('/good/') > 0):
                print(True if weight == 1 else False, weighti, fn)
+               if verbose:
+                 content = Path(fn).read_bytes()
+                 try:
+                    content = content.decode('utf-8')
+                 except UnicodeDecodeError:
+                    content = content.decode('iso-8859-15')
+                 print("\n\n" + content + "\n\n")
 
 if __name__ == "__main__":
     opt = get_args()
