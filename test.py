@@ -10,9 +10,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
+from datetime import datetime
 from src.utils import *
 from src.dataset import MyDataset
-from src.character_level_cnn import CharacterLevelCNN
 
 
 def get_args():
@@ -66,6 +66,7 @@ def train(opt):
                 weight = torch.argmax(out[0])
                 weighti = int(out[0][1].item() * 1000)
                 response = {"license": (True if weight == 1 else False)}
+                response["timestamp"] = datetime.timestamp(datetime.now())
                 response["filename"] = fn
                 if weight == 1:
                     response["confidence"] = (weighti - 500) / 5
